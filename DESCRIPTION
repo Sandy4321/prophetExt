@@ -1,0 +1,13 @@
+Package: prophetExt
+Type: Package
+Title: Extension for Facebook Prophet
+Version: 0.0.0.9000
+Authors@R:
+    person("Koji", "Makiyama", , "hoxo.smile@gmail.com", c("aut", "cre"))
+Description: Extension for Facebook prophet package.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  prophet
+RoxygenNote: 6.0.1
