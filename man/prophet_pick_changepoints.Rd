@@ -2,15 +2,25 @@
 % Please edit documentation in R/prophet_pick_changepoints.R
 \name{prophet_pick_changepoints}
 \alias{prophet_pick_changepoints}
-\title{Pick Cahngepoints from Prophet Object}
+\title{Pick changepoints from prophet object}
 \usage{
-prophet_pick_changepoints(model, digit = 2)
+prophet_pick_changepoints(model, digits = 2)
 }
 \arguments{
-\item{model}{prophet object}
+\item{model}{Prophet model object.}
 
-\item{digit}{effective digit. Default 2.}
+\item{digits}{Integer, indicating the number of decimal places to be used. Default 2.}
+}
+\value{
+A data frame consists of changepoints, growth rate and delta (changes in the growth rate).
 }
 \description{
-Pick Cahngepoints from Prophet Object
+Pick changepoints from prophet object
+}
+\examples{
+\dontrun{
+m <- prophet(df)
+prophet_pick_changepoints(m)
+}
+
 }
