@@ -15,13 +15,22 @@
 prophet_pick_changepoints <- function(model, digits = 2) {
   delta <- as.vector(model$params$delta)
   cp_names <- model$changepoints
-  while(any(abs(delta) < 10^-digits)) {
+  cp_positions <- model$changepoints.t
+  while(length(delta) > 0 && any(abs(delta) < 10^-digits)) {
     ind <- which.min(abs(delta))
-    cp_names <- cp_names[-ind]
-    value <- delta[ind]
+    if (ind == 1) {
+      pos <- 2
+    } else if (ind == length(delta)) {
+      pos <- length(delta) - 1
+    } else if (2 * cp_positions[ind] - cp_positions[ind-1] < cp_positions[ind+1]) {
+      pos <- ind - 1
+    } else {
+      pos <- ind + 1
+    }
+    delta[pos] <- delta[pos] + delta[ind]
     delta <- delta[-ind]
-    if (ind > length(delta)) ind <- ind - 1
-    delta[ind] <- delta[ind] + value
+    cp_names <- cp_names[-ind]
+    cp_positions <- cp_positions[-ind]
   }
   cp_names <- c(model$start, cp_names)
   delta <- c(0, delta)
