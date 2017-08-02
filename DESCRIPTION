@@ -1,13 +1,18 @@
 Package: prophetExt
 Type: Package
 Title: Extension for Facebook Prophet
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R:
     person("Koji", "Makiyama", , "hoxo.smile@gmail.com", c("aut", "cre"))
 Description: Extension for Facebook prophet package.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
+Depends:
+  R (>= 3.2.3)
 Imports:
-  prophet
+  dplyr (>= 0.5.0),
+  ggplot2,
+  lubridate,
+  outliers,
+  prophet (>= 0.1.1)
 RoxygenNote: 6.0.1
