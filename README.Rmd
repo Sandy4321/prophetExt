@@ -1,0 +1,67 @@
+---
+output: 
+  html_document:
+    keep_md: true
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-",
+  message = FALSE,
+  cache = TRUE
+)
+```
+
+# prophetExt
+
+## Installation
+
+You can install prophetExt from github with:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("hoxo-m/prophetExt")
+```
+
+or
+
+```{r githubinstall, eval=FALSE}
+# install.packages("githubinstall")
+githubinstall::githubinstall("prophetExt")
+```
+
+## Example
+
+Ready data.
+
+```{r ready-data}
+df <- read.csv("https://raw.githubusercontent.com/facebookincubator/prophet/master/examples/example_wp_peyton_manning.csv")
+df$y <- log(df$y)
+```
+
+Fit model.
+
+```{r fit-model, results='hide'}
+library(prophet)
+m <- prophet(df)
+```
+
+Pick changepoints.
+
+```{r example-pick-changepoints}
+library(prophetExt)
+cpts <- prophet_pick_changepoints(m)
+cpts
+```
+
+Draw changepoints.
+
+```{r draw-changepoints}
+future <- make_future_dataframe(m, 365)
+fore <- predict(m, future)
+plot(m, fore) + prophet_gglayer(cpts)
+```
