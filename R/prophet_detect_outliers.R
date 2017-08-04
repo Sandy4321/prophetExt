@@ -3,6 +3,7 @@
 #' @param model Prophet model object.
 #' @param p_limit Numeric, limit of p-value for Grubbs test. Default 0.05.
 #' @param recursive Logical, whether to search recursively. Default TRUE.
+#' @param freq Character, 'day', 'week', 'month', 'quarter' or 'year' to pass make_future_dataframe().
 #'
 #' @return A data frame consists of ds, y, residuals and p values.
 #'
@@ -17,7 +18,9 @@
 #' @importFrom stats predict
 #'
 #' @export
-prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
+prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE,
+                                    freq = c("day", "week", "month", "quarter", "year")) {
+  freq <- match.arg(freq)
   data_hist <- model$history
   outlier_ds <- Sys.Date()[-1]
   y_values <- c()
@@ -36,7 +39,7 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
                  mcmc.samples = model$mcmc.samples,
                  interval.width = model$interval.width,
                  uncertainty.samples = model$uncertainty.samples)
-    future <- make_future_dataframe(m, 1)
+    future <- make_future_dataframe(m, 1, freq = freq, include_history = TRUE)
     fore <- predict(m, future)
     resid_df <- merge(fore, data_hist, by="ds")
     resid_df$resid <- resid_df$y - resid_df$yhat

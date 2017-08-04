@@ -4,7 +4,8 @@
 \alias{prophet_detect_outliers}
 \title{Detect outliers using Grubbs test.}
 \usage{
-prophet_detect_outliers(model, p_limit = 0.05, recursive = TRUE)
+prophet_detect_outliers(model, p_limit = 0.05, recursive = TRUE,
+  freq = c("day", "week", "month", "quarter", "year"))
 }
 \arguments{
 \item{model}{Prophet model object.}
@@ -12,6 +13,8 @@ prophet_detect_outliers(model, p_limit = 0.05, recursive = TRUE)
 \item{p_limit}{Numeric, limit of p-value for Grubbs test. Default 0.05.}
 
 \item{recursive}{Logical, whether to search recursively. Default TRUE.}
+
+\item{freq}{Character, 'day', 'week', 'month', 'quarter' or 'year' to pass make_future_dataframe().}
 }
 \value{
 A data frame consists of ds, y, residuals and p values.

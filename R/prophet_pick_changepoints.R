@@ -13,29 +13,28 @@
 #'
 #' @export
 prophet_pick_changepoints <- function(model, digits = 2) {
-  delta <- as.vector(model$params$delta)
-  cp_names <- model$changepoints
-  cp_positions <- model$changepoints.t
-  while(length(delta) > 0 && any(abs(delta) < 10^-digits)) {
-    ind <- which.min(abs(delta))
+  df <- data.frame(cp = model$changepoints,
+                   cp.t = model$changepoints.t,
+                   delta = as.vector(model$params$delta))
+  while(nrow(df) > 1 && any(abs(df$delta) < 10^-digits)) {
+    ind <- which.min(abs(df$delta))
     if (ind == 1) {
       pos <- 2
-    } else if (ind == length(delta)) {
-      pos <- length(delta) - 1
-    } else if (2 * cp_positions[ind] - cp_positions[ind-1] < cp_positions[ind+1]) {
-      pos <- ind - 1
+    } else if (ind == nrow(df) || 2 * df$cp.t[ind] < df$cp.t[ind-1] + df$cp.t[ind+1]) {
+      pos <-  ind - 1
     } else {
       pos <- ind + 1
     }
-    delta[pos] <- delta[pos] + delta[ind]
-    delta <- delta[-ind]
-    cp_names <- cp_names[-ind]
-    cp_positions <- cp_positions[-ind]
+    df$delta[pos] <- df$delta[pos] + df$delta[ind]
+    df <- df[-ind, , drop = FALSE]
   }
-  cp_names <- c(model$start, cp_names)
-  delta <- c(0, delta)
+  if (nrow(df) == 1 && abs(df$delta) < 10^-digits) {
+    df <- data.frame()
+  }
+  cp <- c(model$start, df$cp)
+  delta <- c(0, df$delta)
   growth_rate <- model$params$k + cumsum(delta)
-  df <- data.frame(changepoints = cp_names, growth_rate = growth_rate, delta = delta)
-  class(df) <- c("prophet_changepoint", class(df))
-  df
+  result <- data.frame(changepoints = cp, growth_rate = growth_rate, delta = delta)
+  class(result) <- c("prophet_changepoint", class(result))
+  result
 }
