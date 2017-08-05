@@ -6,7 +6,7 @@ output:
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, results='hide'}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -14,6 +14,7 @@ knitr::opts_chunk$set(
   message = FALSE,
   cache = TRUE
 )
+Sys.setlocale("LC_TIME", "C")
 ```
 
 # prophetExt
@@ -64,4 +65,23 @@ Draw changepoints.
 future <- make_future_dataframe(m, 365)
 fore <- predict(m, future)
 plot(m, fore) + prophet_gglayer(cpts)
+```
+
+Detect outliers.
+
+```{r detect-outliers, results='hide'}
+outliers <- prophet_detect_outliers(m)
+head(outliers)
+```
+
+Draw outliers.
+
+```{r draw-outliers}
+plot(m, fore) + prophet_gglayer(outliers)
+```
+
+Draw calendar plot.
+
+```{r draw-calendar-plot, fig.height=7.5, fig.width=10}
+prophet_calendar_plot(outliers)
 ```

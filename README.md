@@ -72,3 +72,29 @@ plot(m, fore) + prophet_gglayer(cpts)
 ```
 
 ![](README-draw-changepoints-1.png)<!-- -->
+
+Detect outliers.
+
+
+```r
+outliers <- prophet_detect_outliers(m)
+head(outliers)
+```
+
+Draw outliers.
+
+
+```r
+plot(m, fore) + prophet_gglayer(outliers)
+```
+
+![](README-draw-outliers-1.png)<!-- -->
+
+Draw calendar plot.
+
+
+```r
+prophet_calendar_plot(outliers)
+```
+
+![](README-draw-calendar-plot-1.png)<!-- -->
