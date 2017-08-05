@@ -16,3 +16,4 @@ Imports:
   outliers,
   prophet (>= 0.1.1)
 RoxygenNote: 6.0.1
+Suggests: testthat
