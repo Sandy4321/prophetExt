@@ -5,6 +5,10 @@
 
 # prophetExt
 
+[![Travis-CI Build Status](https://travis-ci.org/hoxo-m/prophetExt.svg?branch=master)](https://travis-ci.org/hoxo-m/prophetExt)
+
+Extension for Facebook [Prophet](https://github.com/facebookincubator/prophet).
+
 ## Installation
 
 You can install prophetExt from github with:
