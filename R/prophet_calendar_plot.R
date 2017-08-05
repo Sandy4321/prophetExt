@@ -7,8 +7,7 @@ prophet_calendar_plot <- function(obj, ...) {
 #' @import dplyr
 #' @importFrom lubridate year month day wday
 #' @export
-prophet_calendar_plot.prophet_outlier <- function(x, type = c("residuals", "pvalues"), ...) {
-  type <- match.arg(type)
+prophet_calendar_plot.prophet_outlier <- function(x, ...) {
   year_range <- range(year(x$ds))
   dates <- seq(as.Date(sprintf("%d-01-01", year_range[1])),
                as.Date(sprintf("%d-12-31", year_range[2])), by="days")
@@ -23,9 +22,8 @@ prophet_calendar_plot.prophet_outlier <- function(x, type = c("residuals", "pval
 
   wdays_abbr <- rev(weekdays(as.Date("1970-01-03") + 1:7, abbreviate = TRUE))
 
-  target <- switch(type, residuals="resid", pvalues="p_value")
   ggplot(df, aes_string("week", "wday")) +
-    geom_tile(aes_string(fill = target)) +
+    geom_tile(aes_string(fill = "resid")) +
     geom_text(aes_string(label = "day")) +
     facet_grid(year ~ month) + xlab("") + ylab("") +
     scale_y_continuous(breaks = 0:6, labels = wdays_abbr) +
