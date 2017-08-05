@@ -3,7 +3,6 @@
 #' @param model Prophet model object.
 #' @param p_limit Numeric, limit of p-value for Grubbs test. Default 0.05.
 #' @param recursive Logical, whether to search recursively. Default TRUE.
-#' @param freq Character, 'day', 'week', 'month', 'quarter' or 'year' to pass make_future_dataframe().
 #'
 #' @return A data frame consists of ds, y, residuals and p values.
 #'
@@ -18,16 +17,11 @@
 #' @importFrom stats predict
 #'
 #' @export
-prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE,
-                                    freq = c("day", "week", "month", "quarter", "year")) {
-  freq <- match.arg(freq)
+prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
   data_hist <- model$history
-  outlier_ds <- Sys.Date()[-1]
-  y_values <- c()
-  resid_values <- c()
-  p_values <- c()
+  df <- data.frame(ds = Sys.Date()[-1], y = double(), resid = double(), p_values = double())
   while(TRUE) {
-    data_hist <- data_hist[!(data_hist$ds %in% outlier_ds), ]
+    data_hist <- data_hist[!(data_hist$ds %in% df$ds), ]
     m <- prophet(data_hist, growth = model$growth,
                  n.changepoints = model$n.changepoints,
                  yearly.seasonality = model$yearly.seasonality,
@@ -39,13 +33,10 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE,
                  mcmc.samples = model$mcmc.samples,
                  interval.width = model$interval.width,
                  uncertainty.samples = model$uncertainty.samples)
-    future <- make_future_dataframe(m, 1, freq = freq, include_history = TRUE)
-    fore <- predict(m, future)
-    resid_df <- merge(fore, data_hist, by="ds")
+    resid_df <- predict(m, data_hist)[, c("ds", "y", "yhat")]
     resid_df$resid <- resid_df$y - resid_df$yhat
-    resid_df <- resid_df[-nrow(resid_df), ]
 
-    n_outlier <- length(outlier_ds)
+    n_outlier <- nrow(df)
     while(TRUE) {
       result_test <- grubbs.test(resid_df$resid, type = 10)
       if (result_test$p.value < p_limit) {
@@ -54,24 +45,21 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE,
         } else {
           ind <- which.max(resid_df$resid)
         }
-        outlier_ds <- c(outlier_ds, resid_df$ds[ind])
-        y_values <- c(y_values, resid_df$y[ind])
-        resid_values <- c(resid_values, resid_df$resid[ind])
-        p_values <- c(p_values, result_test$p.value)
+        row <- resid_df[ind, , drop=FALSE]
+        row$p_value <- result_test$p.value
+        df <- rbind(df, row)
       } else {
         break
       }
-      resid_df <- resid_df[-ind, ]
+      resid_df <- resid_df[-ind, , drop=FALSE]
     }
-    if (n_outlier == length(outlier_ds) || !recursive) {
+    if (n_outlier == nrow(df) || !recursive) {
       break
     } else {
-      message(sprintf("Detect %d outliers", length(outlier_ds) - n_outlier))
+      message(sprintf("Detect %d outliers", nrow(df) - n_outlier))
     }
   }
-  df <- data.frame(ds = outlier_ds, y = y_values,
-                   resid = resid_values, p_value = p_values)
-  df <- df[order(df$ds), ]
+  df <- df[order(df$ds), , drop=FALSE]
   rownames(df) <- seq_len(nrow(df))
   class(df) <- c("prophet_outlier", class(df))
   df
