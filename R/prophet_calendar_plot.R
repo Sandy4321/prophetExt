@@ -1,3 +1,8 @@
+#' Calendar plot
+#'
+#' @param obj Object.
+#' @param ... Other arguments.
+#'
 #' @export
 prophet_calendar_plot <- function(obj, ...) {
   UseMethod("prophet_calendar_plot")
@@ -7,12 +12,12 @@ prophet_calendar_plot <- function(obj, ...) {
 #' @import dplyr
 #' @importFrom lubridate year month day wday
 #' @export
-prophet_calendar_plot.prophet_outlier <- function(x, ...) {
-  year_range <- range(year(x$ds))
+prophet_calendar_plot.prophet_outlier <- function(obj, ...) {
+  year_range <- range(year(obj$ds))
   dates <- seq(as.Date(sprintf("%d-01-01", year_range[1])),
                as.Date(sprintf("%d-12-31", year_range[2])), by="days")
 
-  df <- left_join(data.frame(ds = dates), x, by="ds")
+  df <- left_join(data.frame(ds = dates), obj, by="ds")
   df <- mutate_each_(df, funs(year, month, day, wday), "ds")
   df <- mutate_(df, wday = "7 - wday")
   df <- group_by_(df, "year", "month")
