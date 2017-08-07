@@ -12,7 +12,7 @@ prophet_pick_changepoints(model, digits = 2)
 \item{digits}{Integer, indicating the number of decimal places to be used. Default 2.}
 }
 \value{
-A data frame consists of changepoints, growth rate and delta (changes in the growth rate).
+A data frame consists of changepoints, growth rates and delta (changes in the growth rates).
 }
 \description{
 Pick changepoints from prophet object

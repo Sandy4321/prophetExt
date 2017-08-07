@@ -60,7 +60,7 @@ Pick changepoints.
 ```{r example-pick-changepoints}
 library(prophetExt)
 cpts <- prophet_pick_changepoints(m)
-cpts
+head(cpts)
 ```
 
 Draw changepoints.
@@ -75,6 +75,9 @@ Detect outliers.
 
 ```{r detect-outliers, results='hide'}
 outliers <- prophet_detect_outliers(m)
+```
+
+```{r print-outliers}
 head(outliers)
 ```
 
@@ -84,7 +87,7 @@ Draw outliers.
 plot(m, fore) + prophet_gglayer(outliers)
 ```
 
-Draw calendar plot.
+Draw outliers using calendar plot.
 
 ```{r draw-calendar-plot, fig.height=7.5, fig.width=10}
 prophet_calendar_plot(outliers)

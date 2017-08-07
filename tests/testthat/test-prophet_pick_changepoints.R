@@ -12,7 +12,8 @@ m <- prophet(df, weekly.seasonality = FALSE, yearly.seasonality = FALSE)
 
 set.seed(314)
 df_nochange <- data.frame(ds, y = rnorm(100))
-m_nochange <- prophet(df_nochange, weekly.seasonality = FALSE, yearly.seasonality = FALSE)
+m_nochange <- prophet(df_nochange,
+                      weekly.seasonality = FALSE, yearly.seasonality = FALSE)
 
 test_that("Basic", {
   cpts <- prophet_pick_changepoints(m)

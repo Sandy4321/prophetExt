@@ -3,7 +3,7 @@
 #' @param model Prophet model object.
 #' @param digits Integer, indicating the number of decimal places to be used. Default 2.
 #'
-#' @return A data frame consists of changepoints, growth rate and delta (changes in the growth rate).
+#' @return A data frame consists of changepoints, growth rates and delta (changes in the growth rates).
 #'
 #' @examples
 #' \dontrun{
@@ -21,7 +21,7 @@ prophet_pick_changepoints <- function(model, digits = 2) {
     if (ind == 1) {
       pos <- 2
     } else if (ind == nrow(df) || 2 * df$cp.t[ind] < df$cp.t[ind-1] + df$cp.t[ind+1]) {
-      pos <-  ind - 1
+      pos <- ind - 1
     } else {
       pos <- ind + 1
     }
