@@ -68,7 +68,7 @@ Draw changepoints.
 ```{r draw-changepoints}
 future <- make_future_dataframe(m, 365)
 fore <- predict(m, future)
-plot(m, fore) + prophet_gglayer(cpts)
+plot(m, fore) + autolayer(cpts)
 ```
 
 Detect outliers.
@@ -84,7 +84,7 @@ head(outliers)
 Draw outliers.
 
 ```{r draw-outliers}
-plot(m, fore) + prophet_gglayer(outliers)
+plot(m, fore) + autolayer(outliers)
 ```
 
 Draw outliers using calendar plot.

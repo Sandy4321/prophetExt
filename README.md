@@ -67,7 +67,7 @@ Draw changepoints.
 ```r
 future <- make_future_dataframe(m, 365)
 fore <- predict(m, future)
-plot(m, fore) + prophet_gglayer(cpts)
+plot(m, fore) + autolayer(cpts)
 ```
 
 ![](README-draw-changepoints-1.png)<!-- -->
@@ -95,7 +95,7 @@ Draw outliers.
 
 
 ```r
-plot(m, fore) + prophet_gglayer(outliers)
+plot(m, fore) + autolayer(outliers)
 ```
 
 ![](README-draw-outliers-1.png)<!-- -->
