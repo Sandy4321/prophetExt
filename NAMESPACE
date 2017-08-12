@@ -2,8 +2,10 @@
 
 S3method(autolayer,prophet_changepoint)
 S3method(autolayer,prophet_outlier)
+S3method(prophet_calendar_plot,prophet)
 S3method(prophet_calendar_plot,prophet_outlier)
 export(autolayer)
+export(layer_changepoints)
 export(prophet_calendar_plot)
 export(prophet_detect_outliers)
 export(prophet_pick_changepoints)

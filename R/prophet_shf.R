@@ -9,6 +9,7 @@
 #' @return A prophet shf object.
 #'
 #' @import prophet
+#' @import dplyr
 #' @importFrom stats loess predict
 #' @export
 prophet_shf <- function(model, periods, k = 3, overlap = 0.5, measure_func = c("MAPE", "MAE")) {

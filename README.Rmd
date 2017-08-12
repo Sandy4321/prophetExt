@@ -55,6 +55,8 @@ library(prophet)
 m <- prophet(df)
 ```
 
+### Change Points
+
 Pick changepoints.
 
 ```{r example-pick-changepoints}
@@ -70,6 +72,8 @@ future <- make_future_dataframe(m, 365)
 fore <- predict(m, future)
 plot(m, fore) + autolayer(cpts)
 ```
+
+### Outliers
 
 Detect outliers.
 

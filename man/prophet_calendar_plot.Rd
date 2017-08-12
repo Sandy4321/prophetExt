@@ -4,10 +4,10 @@
 \alias{prophet_calendar_plot}
 \title{Calendar plot}
 \usage{
-prophet_calendar_plot(obj, ...)
+prophet_calendar_plot(object, ...)
 }
 \arguments{
-\item{obj}{Object.}
+\item{object}{Object.}
 
 \item{...}{Other arguments.}
 }
