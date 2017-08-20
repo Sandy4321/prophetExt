@@ -96,3 +96,17 @@ Draw outliers using calendar plot.
 ```{r draw-calendar-plot, fig.height=7.5, fig.width=10}
 prophet_calendar_plot(outliers)
 ```
+
+### SHF (Simulated Historical Forcast)
+
+```{r shf, results='hide'}
+shf <- prophet_shf(m, periods = 365)
+```
+
+```{r shf-result}
+head(shf$estimated)
+```
+
+```{r plot-shf}
+plot(shf)
+```

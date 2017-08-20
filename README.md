@@ -45,6 +45,8 @@ library(prophet)
 m <- prophet(df)
 ```
 
+### Change Points
+
 Pick changepoints.
 
 
@@ -71,6 +73,8 @@ plot(m, fore) + autolayer(cpts)
 ```
 
 ![](README-draw-changepoints-1.png)<!-- -->
+
+### Outliers
 
 Detect outliers.
 
@@ -108,3 +112,29 @@ prophet_calendar_plot(outliers)
 ```
 
 ![](README-draw-calendar-plot-1.png)<!-- -->
+
+### SHF (Simulated Historical Forcast)
+
+
+```r
+shf <- prophet_shf(m, periods = 365)
+```
+
+
+```r
+head(shf$estimated)
+#>   x      value
+#> 1 1 0.05222963
+#> 2 2 0.05196028
+#> 3 3 0.05169278
+#> 4 4 0.05142713
+#> 5 5 0.05116335
+#> 6 6 0.05090144
+```
+
+
+```r
+plot(shf)
+```
+
+![](README-plot-shf-1.png)<!-- -->
