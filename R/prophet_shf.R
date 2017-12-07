@@ -21,29 +21,33 @@ prophet_shf <- function(model, periods, k = 3, overlap = 0.5, measure_func = c("
   }
 
   data_hist <- model$history
-  boundary_ds <- get_boundary_ds(data_hist$ds, periods, k, overlap)
+  boundary <- get_boundary_ds(data_hist$ds, periods, k, overlap)
 
   observed <- mapply(function(ds_bound, iter) {
     df_train <- filter(data_hist, ds <= ds_bound)
-    df_test <- filter(data_hist, between(ds, ds_bound + 1, ds_bound + periods))
-    m <- prophet(data_hist, growth = model$growth,
-                 n.changepoints = model$n.changepoints,
-                 yearly.seasonality = model$yearly.seasonality,
-                 weekly.seasonality = model$weekly.seasonality,
-                 holidays = model$holidays,
-                 seasonality.prior.scale = model$seasonality.prior.scale,
-                 changepoint.prior.scale = model$changepoint.prior.scale,
-                 holidays.prior.scale = model$holidays.prior.scale,
-                 mcmc.samples = model$mcmc.samples,
-                 interval.width = model$interval.width,
-                 uncertainty.samples = model$uncertainty.samples)
+    df_test <- filter(data_hist, between(ds, ds_bound + boundary$interval, ds_bound + periods * boundary$interval))
+    m <- prophet(
+      df = data_hist,
+      growth = model$growth,
+      changepoints = model$changepoints,
+      n.changepoints = model$n.changepoints,
+      yearly.seasonality = model$yearly.seasonality,
+      weekly.seasonality = model$weekly.seasonality,
+      daily.seasonality = model$daily.seasonality,
+      holidays = model$holidays,
+      seasonality.prior.scale = model$seasonality.prior.scale,
+      holidays.prior.scale = model$holidays.prior.scale,
+      changepoint.prior.scale = model$changepoint.prior.scale,
+      mcmc.samples = 0,
+      interval.width = model$interval.width
+    )
     fore <- predict(m, df_test)
     x <- as.integer(fore$ds - ds_bound)
-    act <- fore$y
+    act <- df_test$y
     pred <- fore$yhat
     value <- measure_func(act, pred)
     data.frame(iter, x, value)
-  }, boundary_ds, seq_len(k), SIMPLIFY = FALSE)
+  }, boundary$boundary_ds, seq_len(k), SIMPLIFY = FALSE)
   observed <- Reduce(rbind, observed)
 
   fitted_model <- loess(value ~ x, data = observed)
@@ -59,5 +63,5 @@ get_boundary_ds <- function(ds, periods, k, overlap) {
   latest_ds <- max(ds)
   boundary_ds <- latest_ds - periods * interval
   boundary_ds <- c(boundary_ds, boundary_ds - ceiling(periods * interval * (1 - overlap)) * seq_len(k-1))
-  rev(boundary_ds)
+  list(boundary_ds = rev(boundary_ds), interval = interval)
 }

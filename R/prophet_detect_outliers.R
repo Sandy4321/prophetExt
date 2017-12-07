@@ -22,18 +22,24 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
   df <- data.frame(ds = Sys.Date()[-1], y = double(), resid = double(), p_values = double())
   while(TRUE) {
     data_hist <- data_hist[!(data_hist$ds %in% df$ds), ]
-    m <- prophet(data_hist, growth = model$growth,
-                 n.changepoints = model$n.changepoints,
-                 yearly.seasonality = model$yearly.seasonality,
-                 weekly.seasonality = model$weekly.seasonality,
-                 holidays = model$holidays,
-                 seasonality.prior.scale = model$seasonality.prior.scale,
-                 changepoint.prior.scale = model$changepoint.prior.scale,
-                 holidays.prior.scale = model$holidays.prior.scale,
-                 mcmc.samples = model$mcmc.samples,
-                 interval.width = model$interval.width,
-                 uncertainty.samples = model$uncertainty.samples)
-    resid_df <- predict(m, data_hist)[, c("ds", "y", "yhat")]
+    m <- prophet(
+      df = data_hist,
+      growth = model$growth,
+      changepoints = model$changepoints,
+      n.changepoints = model$n.changepoints,
+      yearly.seasonality = model$yearly.seasonality,
+      weekly.seasonality = model$weekly.seasonality,
+      daily.seasonality = model$daily.seasonality,
+      holidays = model$holidays,
+      seasonality.prior.scale = model$seasonality.prior.scale,
+      holidays.prior.scale = model$holidays.prior.scale,
+      changepoint.prior.scale = model$changepoint.prior.scale,
+      mcmc.samples = 0,
+      interval.width = model$interval.width,
+      fit = TRUE)
+
+    resid_df <- predict(m, data_hist)
+    resid_df <- merge(resid_df, data_hist, by = "ds")[, c("ds", "y", "yhat")]
     resid_df$resid <- resid_df$y - resid_df$yhat
 
     n_outlier <- nrow(df)
