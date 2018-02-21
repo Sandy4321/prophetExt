@@ -4,3 +4,5 @@
 .Ruserdata
 README.html
 README_cache
+packrat/lib*/
+packrat/src/

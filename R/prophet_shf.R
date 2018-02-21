@@ -12,7 +12,8 @@
 #' @import dplyr
 #' @importFrom stats loess predict
 #' @export
-prophet_shf <- function(model, periods, k = 3, overlap = 0.5, measure_func = c("MAPE", "MAE")) {
+prophet_shf <- function(model, periods, k = 3, overlap = 0.5, data_hist = model$history,
+                        measure_func = c("MAPE", "MAE")) {
   if (is.character(measure_func)) {
     measure_func <- match.arg(measure_func)
     measure_func <- switch(measure_func,
@@ -20,7 +21,8 @@ prophet_shf <- function(model, periods, k = 3, overlap = 0.5, measure_func = c("
                            "MAE" = function(act, pred) abs(act - pred))
   }
 
-  data_hist <- model$history
+  data_hist$ds <- as.POSIXct(data_hist$ds)
+
   boundary <- get_boundary_ds(data_hist$ds, periods, k, overlap)
 
   observed <- mapply(function(ds_bound, iter) {

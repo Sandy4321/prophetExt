@@ -21,9 +21,10 @@ prophet_calendar_plot.prophet <- function(object, fcst, ...) {
   year_range <- range(year(resid_df$ds))
   dates <- seq(as.Date(sprintf("%d-01-01", year_range[1])),
                as.Date(sprintf("%d-12-31", year_range[2])), by="days")
+  dates <- as.POSIXct(dates)
 
   df <- left_join(data.frame(ds = dates), resid_df, by="ds")
-  df <- mutate_each_(df, funs(year, month, day, wday), "ds")
+  df <- mutate_at(df, vars("ds") ,funs(year, month, day, wday))
   df <- mutate_(df, wday = "7 - wday")
   df <- group_by_(df, "year", "month")
   df <- mutate_(df, week = "cumsum(wday == 7 - 1)")
@@ -50,9 +51,10 @@ prophet_calendar_plot.prophet_outlier <- function(object, ...) {
   year_range <- range(year(object$ds))
   dates <- seq(as.Date(sprintf("%d-01-01", year_range[1])),
                as.Date(sprintf("%d-12-31", year_range[2])), by="days")
+  dates <- as.POSIXct(dates)
 
   df <- left_join(data.frame(ds = dates), object, by="ds")
-  df <- mutate_each_(df, funs(year, month, day, wday), "ds")
+  df <- mutate_at(df, vars("ds") ,funs(year, month, day, wday))
   df <- mutate_(df, wday = "7 - wday")
   df <- group_by_(df, "year", "month")
   df <- mutate_(df, week = "cumsum(wday == 7 - 1)")
@@ -66,7 +68,6 @@ prophet_calendar_plot.prophet_outlier <- function(object, ...) {
     geom_text(aes_string(label = "day")) +
     facet_grid(year ~ month) + xlab("") + ylab("") +
     scale_y_continuous(breaks = 0:6, labels = wdays_abbr) +
-    # scale_fill_gradient(low="red", high="green") +
     scale_fill_gradient2(low="red", high="blue") +
     scale_x_continuous(breaks = NULL)
 }
