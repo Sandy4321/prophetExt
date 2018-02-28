@@ -24,7 +24,7 @@ prophet_calendar_plot.prophet <- function(object, fcst, start = NULL, end = NULL
   }
   resid_df <- mutate_(fcst, resid = "y - yhat")
 
-  plot_calendar(df, resid_df)
+  plot_calendar(resid_df)
 }
 
 #' @import ggplot2
@@ -32,10 +32,10 @@ prophet_calendar_plot.prophet <- function(object, fcst, start = NULL, end = NULL
 #' @importFrom lubridate year month day wday
 #' @export
 prophet_calendar_plot.prophet_outlier <- function(object, ...) {
-  plot_calendar(df, object)
+  plot_calendar(object)
 }
 
-plot_calendar <- function(df, resid_df) {
+plot_calendar <- function(resid_df) {
   year_range <- range(year(resid_df$ds))
   dates <- seq(as.Date(sprintf("%d-01-01", year_range[1])),
                as.Date(sprintf("%d-12-31", year_range[2])), by="days")

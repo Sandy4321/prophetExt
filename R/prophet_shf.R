@@ -4,6 +4,7 @@
 #' @param periods Integer.
 #' @param k Integer.
 #' @param overlap Numeric.
+#' @param data_hist Data.frame.
 #' @param measure_func Function or character.
 #'
 #' @return A prophet shf object.
@@ -25,8 +26,9 @@ prophet_shf <- function(model, periods, k = 3, overlap = 0.5, data_hist = model$
   boundary <- get_boundary_ds(data_hist$ds, periods, k, overlap)
 
   observed <- mapply(function(ds_bound, iter) {
-    df_train <- filter(data_hist, ds <= ds_bound)
-    df_test <- filter(data_hist, between(ds, ds_bound + boundary$interval, ds_bound + periods * boundary$interval))
+    df_train <- filter(data_hist, data_hist$ds <= ds_bound)
+    df_test <- filter(data_hist, data_hist$ds >= ds_bound + boundary$interval,
+                      data_hist$ds <= ds_bound + periods * boundary$interval)
     m <- prophet(
       df = data_hist,
       growth = model$growth,

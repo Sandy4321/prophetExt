@@ -4,8 +4,8 @@
 \alias{prophet_shf}
 \title{Simulated Historical Forecast}
 \usage{
-prophet_shf(model, periods, k = 3, overlap = 0.5, measure_func = c("MAPE",
-  "MAE"))
+prophet_shf(model, periods, k = 3, overlap = 0.5,
+  data_hist = model$history, measure_func = c("MAPE", "MAE"))
 }
 \arguments{
 \item{model}{Prophet model object.}
@@ -15,6 +15,8 @@ prophet_shf(model, periods, k = 3, overlap = 0.5, measure_func = c("MAPE",
 \item{k}{Integer.}
 
 \item{overlap}{Numeric.}
+
+\item{data_hist}{Data.frame.}
 
 \item{measure_func}{Function or character.}
 }

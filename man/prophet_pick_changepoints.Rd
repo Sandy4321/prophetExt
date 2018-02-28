@@ -4,12 +4,12 @@
 \alias{prophet_pick_changepoints}
 \title{Pick changepoints from prophet object}
 \usage{
-prophet_pick_changepoints(model, digits = 2)
+prophet_pick_changepoints(model, thresh = 0.01)
 }
 \arguments{
 \item{model}{Prophet model object.}
 
-\item{digits}{Integer, indicating the number of decimal places to be used. Default 2.}
+\item{thresh}{Double. Default 0.01.}
 }
 \value{
 A data frame consists of changepoints, growth rates and delta (changes in the growth rates).

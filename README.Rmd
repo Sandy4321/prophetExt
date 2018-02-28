@@ -1,7 +1,7 @@
 ---
 output: 
   md_document:
-    variant: markdown_github
+    variant: gfm
   html_document:
     keep_md: true
 ---
@@ -21,6 +21,7 @@ Sys.setlocale("LC_TIME", "C")
 # prophetExt
 
 [![Travis-CI Build Status](https://travis-ci.org/hoxo-m/prophetExt.svg?branch=master)](https://travis-ci.org/hoxo-m/prophetExt)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version/prophetExt)](https://cran.r-project.org/package=prophetExt)
 
 Extension for Facebook [Prophet](https://github.com/facebookincubator/prophet).
 

@@ -1,15 +1,15 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-prophetExt
-==========
+
+# prophetExt
 
 [![Travis-CI Build
 Status](https://travis-ci.org/hoxo-m/prophetExt.svg?branch=master)](https://travis-ci.org/hoxo-m/prophetExt)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/prophetExt)](https://cran.r-project.org/package=prophetExt)
 
 Extension for Facebook
 [Prophet](https://github.com/facebookincubator/prophet).
 
-Installation
-------------
+## Installation
 
 You can install prophetExt from github with:
 
@@ -25,10 +25,10 @@ or
 githubinstall::githubinstall("prophetExt")
 ```
 
-Example
--------
+## Example
 
-Ready data.
+Ready
+data.
 
 ``` r
 df <- read.csv("https://raw.githubusercontent.com/facebook/prophet/master/examples/example_wp_peyton_manning.csv")
@@ -67,7 +67,7 @@ fore <- predict(m, future)
 plot(m, fore) + autolayer(cpts)
 ```
 
-![](README-images/draw-changepoints-1.png)
+![](README-images/draw-changepoints-1.png)<!-- -->
 
 ### Outliers
 
@@ -94,7 +94,7 @@ Draw outliers.
 plot(m, fore) + autolayer(outliers)
 ```
 
-![](README-images/draw-outliers-1.png)
+![](README-images/draw-outliers-1.png)<!-- -->
 
 Draw outliers using calendar plot.
 
@@ -102,7 +102,7 @@ Draw outliers using calendar plot.
 prophet_calendar_plot(outliers)
 ```
 
-![](README-images/draw-calendar-plot-1.png)
+![](README-images/draw-calendar-plot-1.png)<!-- -->
 
 ### SHF (Simulated Historical Forcast)
 
@@ -125,4 +125,4 @@ head(shf$estimated)
 plot(shf)
 ```
 
-![](README-images/plot-shf-1.png)
+![](README-images/plot-shf-1.png)<!-- -->
