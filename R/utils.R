@@ -30,3 +30,5 @@ layer_changepoints <- function(m, threshold = 0.01, cp_color = "red",
   layers <- append(layers, cp_layer)
   layers
 }
+
+set_date <- get("set_date", envir = asNamespace("prophet"))

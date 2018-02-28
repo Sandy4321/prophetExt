@@ -26,7 +26,7 @@ autolayer.prophet_changepoint <- function(object, ...) {
   if (is.null(color)) color <- "red"
   list(
     geom_line(aes_string("ds", "trend"), color = color, ...),
-    geom_vline(xintercept = as.integer(object$changepoints[-1]),
+    geom_vline(xintercept = object$changepoint[-1],
                color = color, linetype = "dashed", ...)
   )
 }

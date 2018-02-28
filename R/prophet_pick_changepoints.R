@@ -17,5 +17,8 @@ prophet_pick_changepoints <- function(model, thresh = 0.01) {
   changepoints <- c(model$start, model$changepoints)[cp_index]
   growth_rate <- model$params$k + c(0, cumsum(model$params$delta))[cp_index]
   delta <- c(NA_real_, model$params$delta)[cp_index]
-  data.frame(changepoint = changepoints, growth_rate = growth_rate, delta = delta)
+  df <- data.frame(changepoint = set_date(changepoints),
+                   growth_rate = growth_rate, delta = delta)
+  class(df) <- c("prophet_changepoint", class(df))
+  df
 }

@@ -1,5 +1,7 @@
 ---
 output: 
+  md_document:
+    variant: markdown_github
   html_document:
     keep_md: true
 ---
@@ -10,9 +12,8 @@ output:
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-",
-  message = FALSE,
-  cache = TRUE
+  fig.path = "README-images/",
+  message = FALSE
 )
 Sys.setlocale("LC_TIME", "C")
 ```
@@ -44,7 +45,7 @@ githubinstall::githubinstall("prophetExt")
 Ready data.
 
 ```{r ready-data}
-df <- read.csv("https://raw.githubusercontent.com/facebookincubator/prophet/master/examples/example_wp_peyton_manning.csv")
+df <- read.csv("https://raw.githubusercontent.com/facebook/prophet/master/examples/example_wp_peyton_manning.csv")
 df$y <- log(df$y)
 ```
 
@@ -52,7 +53,7 @@ Fit model.
 
 ```{r fit-model, results='hide'}
 library(prophet)
-m <- prophet(df)
+m <- prophet(df, daily.seasonality = FALSE)
 ```
 
 ### Change Points

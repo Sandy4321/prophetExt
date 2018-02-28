@@ -8,7 +8,7 @@ adjust <- c(rep(0, 50), rep(100, 50))
 set.seed(314)
 y <- trend * 1:100 + rnorm(100, adjust, 3)
 df <- data.frame(ds, y)
-m <- prophet(df, weekly.seasonality = FALSE, yearly.seasonality = FALSE)
+m <- prophet(df, weekly.seasonality = FALSE, yearly.seasonality = FALSE, daily.seasonality = FALSE)
 
 set.seed(314)
 df_nochange <- data.frame(ds, y = rnorm(100))
@@ -18,13 +18,13 @@ m_nochange <- prophet(df_nochange,
 test_that("Basic", {
   cpts <- prophet_pick_changepoints(m)
   expect_equal(nrow(cpts), 8L)
-  expect_true(all(abs(cpts$delta[-1]) >= 10^-2))
+  expect_true(all(abs(cpts$delta[-1]) >= 0.01))
 })
 
 test_that("digits", {
-  cpts <- prophet_pick_changepoints(m, digits = 1)
+  cpts <- prophet_pick_changepoints(m, thresh = 0.1)
   expect_equal(nrow(cpts), 7L)
-  expect_true(all(abs(cpts$delta[-1]) >= 10^-1))
+  expect_true(all(abs(cpts$delta[-1]) >= 0.1))
 })
 
 test_that("no change", {

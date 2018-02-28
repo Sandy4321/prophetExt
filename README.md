@@ -1,140 +1,128 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+prophetExt
+==========
 
+[![Travis-CI Build
+Status](https://travis-ci.org/hoxo-m/prophetExt.svg?branch=master)](https://travis-ci.org/hoxo-m/prophetExt)
 
+Extension for Facebook
+[Prophet](https://github.com/facebookincubator/prophet).
 
-# prophetExt
-
-[![Travis-CI Build Status](https://travis-ci.org/hoxo-m/prophetExt.svg?branch=master)](https://travis-ci.org/hoxo-m/prophetExt)
-
-Extension for Facebook [Prophet](https://github.com/facebookincubator/prophet).
-
-## Installation
+Installation
+------------
 
 You can install prophetExt from github with:
 
-
-```r
+``` r
 # install.packages("devtools")
 devtools::install_github("hoxo-m/prophetExt")
 ```
 
 or
 
-
-```r
+``` r
 # install.packages("githubinstall")
 githubinstall::githubinstall("prophetExt")
 ```
 
-## Example
+Example
+-------
 
 Ready data.
 
-
-```r
-df <- read.csv("https://raw.githubusercontent.com/facebookincubator/prophet/master/examples/example_wp_peyton_manning.csv")
+``` r
+df <- read.csv("https://raw.githubusercontent.com/facebook/prophet/master/examples/example_wp_peyton_manning.csv")
 df$y <- log(df$y)
 ```
 
 Fit model.
 
-
-```r
+``` r
 library(prophet)
-m <- prophet(df)
+m <- prophet(df, daily.seasonality = FALSE)
 ```
 
 ### Change Points
 
 Pick changepoints.
 
-
-```r
+``` r
 library(prophetExt)
 cpts <- prophet_pick_changepoints(m)
 head(cpts)
-#>   changepoints  growth_rate      delta
-#> 1   2007-12-10 -0.355170111  0.0000000
-#> 2   2008-10-11 -0.005433292  0.3497368
-#> 3   2009-01-14  0.453643069  0.4590764
-#> 4   2009-10-26  0.212617070 -0.2410260
-#> 5   2010-01-31 -0.032368395 -0.2449855
-#> 6   2011-02-16  0.258211353  0.2905797
+#>   changepoint  growth_rate      delta
+#> 1  2007-12-10 -0.360276798         NA
+#> 2  2008-10-11 -0.002125965  0.3581510
+#> 3  2009-01-14  0.458734213  0.4608602
+#> 4  2009-10-26  0.217411387 -0.2365794
+#> 5  2010-01-31 -0.034489145 -0.2519005
+#> 6  2011-02-16  0.252856713  0.2873459
 ```
 
 Draw changepoints.
 
-
-```r
+``` r
 future <- make_future_dataframe(m, 365)
 fore <- predict(m, future)
 plot(m, fore) + autolayer(cpts)
 ```
 
-![](README-draw-changepoints-1.png)<!-- -->
+![](README-images/draw-changepoints-1.png)
 
 ### Outliers
 
 Detect outliers.
 
-
-```r
+``` r
 outliers <- prophet_detect_outliers(m)
 ```
 
-
-```r
+``` r
 head(outliers)
 #>           ds        y     yhat    resid      p_value
-#> 1 2008-01-21 10.89720 9.250155 1.647047 4.990818e-02
-#> 2 2008-02-04 12.09746 9.215482 2.881975 6.718208e-07
-#> 3 2008-02-05 10.63528 8.930037 1.705241 3.265459e-02
-#> 4 2009-01-04 10.15382 8.306900 1.846918 1.541861e-02
-#> 5 2009-11-16 10.55870 8.865276 1.693423 3.490245e-02
-#> 6 2010-01-17 11.00793 9.259726 1.748206 2.644435e-02
+#> 1 2008-01-21 10.89720 9.257430 1.639772 4.921098e-02
+#> 2 2008-02-04 12.09746 9.218465 2.878991 7.197366e-07
+#> 3 2008-02-05 10.63528 8.932996 1.702283 3.401723e-02
+#> 4 2009-01-04 10.15382 8.304355 1.849463 1.626819e-02
+#> 5 2009-11-16 10.55870 8.868621 1.690078 3.651931e-02
+#> 6 2010-01-17 11.00793 9.264015 1.743917 2.793262e-02
 ```
 
 Draw outliers.
 
-
-```r
+``` r
 plot(m, fore) + autolayer(outliers)
 ```
 
-![](README-draw-outliers-1.png)<!-- -->
+![](README-images/draw-outliers-1.png)
 
 Draw outliers using calendar plot.
 
-
-```r
+``` r
 prophet_calendar_plot(outliers)
 ```
 
-![](README-draw-calendar-plot-1.png)<!-- -->
+![](README-images/draw-calendar-plot-1.png)
 
 ### SHF (Simulated Historical Forcast)
 
-
-```r
+``` r
 shf <- prophet_shf(m, periods = 365)
 ```
 
-
-```r
+``` r
 head(shf$estimated)
 #>   x      value
-#> 1 1 0.05222963
-#> 2 2 0.05196028
-#> 3 3 0.05169278
-#> 4 4 0.05142713
-#> 5 5 0.05116335
-#> 6 6 0.05090144
+#> 1 1 0.05239550
+#> 2 2 0.05211918
+#> 3 3 0.05184478
+#> 4 4 0.05157229
+#> 5 5 0.05130174
+#> 6 6 0.05103313
 ```
 
-
-```r
+``` r
 plot(shf)
 ```
 
-![](README-plot-shf-1.png)<!-- -->
+![](README-images/plot-shf-1.png)

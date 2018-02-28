@@ -20,8 +20,7 @@ prophet_shf <- function(model, periods, k = 3, overlap = 0.5, data_hist = model$
                            "MAPE" = function(act, pred) abs(act - pred) / act,
                            "MAE" = function(act, pred) abs(act - pred))
   }
-
-  data_hist$ds <- as.POSIXct(data_hist$ds)
+  data_hist$ds <- set_date(data_hist$ds)
 
   boundary <- get_boundary_ds(data_hist$ds, periods, k, overlap)
 
