@@ -12,12 +12,12 @@ prophet_calendar_plot <- function(object, ...) {
 #' @import dplyr
 #' @importFrom lubridate year month day wday
 #' @export
-prophet_calendar_plot.prophet <- function(object, fcst, start = NULL, end = NULL, ...) {
+prophet_calendar_plot.prophet <- function(object, fcst, begin = NULL, end = NULL, ...) {
   if (!("y" %in% colnames(fcst))) {
     fcst <- left_join(fcst, object$history, by = "ds")
   }
-  if (!is.null(start)) {
-    fcst <- fcst[fcst$ds >= set_date(start), ]
+  if (!is.null(begin)) {
+    fcst <- fcst[fcst$ds >= set_date(begin), ]
   }
   if (!is.null(end)) {
     fcst <- fcst[fcst$ds <= set_date(end), ]
@@ -52,11 +52,17 @@ plot_calendar <- function(resid_df) {
 
   wdays_abbr <- rev(weekdays(as.Date("1970-01-03") + 1:7, abbreviate = TRUE))
 
+  if (identical(theme_get(), theme_gray())) {
+    ggtheme <- theme_bw
+  } else {
+    ggtheme <- theme_get
+  }
+
   ggplot(df, aes_string("week", "wday")) +
     geom_tile(aes_string(fill = "resid")) +
     geom_text(aes_string(label = "day")) +
     facet_grid(year ~ month) + xlab("") + ylab("") +
     scale_y_continuous(breaks = 0:6, labels = wdays_abbr) +
     scale_fill_gradient2(low="red", high="blue") +
-    scale_x_continuous(breaks = NULL) + theme_bw()
+    scale_x_continuous(breaks = NULL) + ggtheme()
 }
