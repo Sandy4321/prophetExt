@@ -26,8 +26,8 @@ jpn_holidays <- function(begin, end) {
       stringsAsFactors = FALSE
     )
   } else {
-    sun_mon_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
-    colnames(sun_mon_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+    sun_mon_holiday <- data.frame(matrix(rep(NA, 5), nrow=1), stringsAsFactors = FALSE)[numeric(0), ]
+    colnames(sun_mon_holiday) <- c("holiday", "ds", "lower_window", "upper_window")
   }
 
   if(nrow(three) != 0){
@@ -39,8 +39,8 @@ jpn_holidays <- function(begin, end) {
       stringsAsFactors = FALSE
     )
   } else {
-    three_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
-    colnames(three_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+    three_holiday <- data.frame(matrix(rep(NA, 5), nrow=1), stringsAsFactors = FALSE)[numeric(0), ]
+    colnames(three_holiday) <- c("holiday", "ds", "lower_window", "upper_window")
   }
 
   if(nrow(four) != 0){
@@ -52,8 +52,8 @@ jpn_holidays <- function(begin, end) {
       stringsAsFactors = FALSE
     )
   } else {
-    four_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
-    colnames(four_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+    four_holiday <- data.frame(matrix(rep(NA, 5), nrow=1), stringsAsFactors = FALSE)[numeric(0), ]
+    colnames(four_holiday) <- c("holiday", "ds", "lower_window", "upper_window")
   }
 
   tobiishi_hol <- data.frame(ds = target_dates) %>%
@@ -69,8 +69,8 @@ jpn_holidays <- function(begin, end) {
       stringsAsFactors = FALSE
     )
   } else {
-    tobiishi <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
-    colnames(tobiishi) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+    tobiishi <- data.frame(matrix(rep(NA, 5), nrow=1), stringsAsFactors = FALSE)[numeric(0), ]
+    colnames(tobiishi) <- c("holiday", "ds", "lower_window", "upper_window")
   }
 
   tobiishi_hol2 <- data.frame(ds = target_dates) %>%
@@ -86,8 +86,8 @@ jpn_holidays <- function(begin, end) {
       stringsAsFactors = FALSE
     )
   } else {
-    tobiishi2 <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
-    colnames(tobiishi2) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+    tobiishi2 <- data.frame(matrix(rep(NA, 5), nrow=1), stringsAsFactors = FALSE)[numeric(0), ]
+    colnames(tobiishi2) <- c("holiday", "ds", "lower_window", "upper_window")
   }
 
   NewYear <- data.frame(
