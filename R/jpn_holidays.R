@@ -17,53 +17,78 @@ jpn_holidays <- function(begin, end) {
   three <- hol_df %>% filter(is.holiday(ds + 1), !is.holiday(ds + 2))
   four <- hol_df %>% filter(is.holiday(ds + 1), is.holiday(ds + 2), !is.holiday(ds + 3))
 
-  sun_mon_holiday <- data.frame(
-    holiday = "日月2連休",
-    ds = two$ds,
-    lower_window = -1,
-    upper_window = 0,
-    stringsAsFactors = FALSE
-  )
+  if(nrow(two) != 0){
+    sun_mon_holiday <- data.frame(
+      holiday = "日月2連休",
+      ds = two$ds,
+      lower_window = -1,
+      upper_window = 0,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    sun_mon_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
+    colnames(sun_mon_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+  }
 
-  three_holiday <- data.frame(
-    holiday = "日月火3連休",
-    ds = three$ds,
-    lower_window = -1,
-    upper_window = 1,
-    stringsAsFactors = FALSE
-  )
+  if(nrow(three) != 0){
+    three_holiday <- data.frame(
+      holiday = "日月火3連休",
+      ds = three$ds,
+      lower_window = -1,
+      upper_window = 1,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    three_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
+    colnames(three_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+  }
 
-  four_holiday <- data.frame(
-    holiday = "日月火水4連休",
-    ds = four$ds,
-    lower_window = -1,
-    upper_window = 2,
-    stringsAsFactors = FALSE
-  )
+  if(nrow(four) != 0){
+    four_holiday <- data.frame(
+      holiday = "日月火水4連休",
+      ds = four$ds,
+      lower_window = -1,
+      upper_window = 2,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    four_holiday <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
+    colnames(four_holiday) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+  }
 
   tobiishi_hol <- data.frame(ds = target_dates) %>%
     filter(wday(ds) == 3) %>%
     filter(is.holiday(ds), !is.holiday(ds-1), is.holiday(ds+1))
 
-  tobiishi <- data.frame(
-    holiday = "火水木3連休",
-    ds = tobiishi_hol$ds,
-    lower_window = -3,
-    upper_window = 2,
-    stringsAsFactors = FALSE
-  )
+  if(nrow(tobiishi_hol) != 0){
+    tobiishi <- data.frame(
+      holiday = "火水木3連休",
+      ds = tobiishi_hol$ds,
+      lower_window = -3,
+      upper_window = 2,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    tobiishi <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
+    colnames(tobiishi) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+  }
 
   tobiishi_hol2 <- data.frame(ds = target_dates) %>%
     filter(wday(ds) == 4) %>%
     filter(is.holiday(ds), !is.holiday(ds-1), is.holiday(ds+1))
 
-  tobiishi2 <- data.frame(
-    holiday = "水木金3連休",
-    ds = tobiishi_hol2$ds,
-    lower_window = -1,
-    upper_window = 1,
-    stringsAsFactors = FALSE
-  )
+  if(nrow(tobiishi_hol2) != 0){
+    tobiishi2 <- data.frame(
+      holiday = "水木金3連休",
+      ds = tobiishi_hol2$ds,
+      lower_window = -1,
+      upper_window = 1,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    tobiishi2 <- data.frame(matrix(rep(NA, 5), nrow=1))[numeric(0), ]
+    colnames(tobiishi2) <- c("holiday", "ds", "lower_window", "upper_window", "stringsAsFactors")
+  }
 
   NewYear <- data.frame(
     holiday = "年末年始",
