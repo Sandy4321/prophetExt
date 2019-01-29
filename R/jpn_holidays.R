@@ -92,7 +92,7 @@ jpn_holidays <- function(begin, end) {
 
   NewYear <- data.frame(
     holiday = "年末年始",
-    ds = seq(lubridate::ceiling_date(begin, "year"), end, by = "years"),
+    ds = seq(lubridate::ceiling_date(as.Date(begin), "year"), as.Date(end), by = "years"),
     lower_window = -4,
     upper_window = 1
   )
