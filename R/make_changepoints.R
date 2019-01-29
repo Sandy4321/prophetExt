@@ -3,5 +3,5 @@
 make_changepoints <- function(begin, end, remove_tail = 1L) {
   changepoints <- seq(ceiling_date(begin, unit = "month"),
                       floor_date(end, unit = "month"), by = "months")
-  head(changepoints, -remove_tail)
+  changepoints[seq_len(length(changepoints) - remove_tail)]
 }

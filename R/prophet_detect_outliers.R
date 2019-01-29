@@ -23,7 +23,7 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
   while(TRUE) {
     data_hist <- data_hist[!(data_hist$ds %in% df$ds), ]
     m <- prophet(
-      df = data_hist,
+      fit = FALSE,
       growth = model$growth,
       changepoints = model$changepoints,
       n.changepoints = model$n.changepoints,
@@ -35,8 +35,14 @@ prophet_detect_outliers <- function(model, p_limit = 0.05, recursive = TRUE) {
       holidays.prior.scale = model$holidays.prior.scale,
       changepoint.prior.scale = model$changepoint.prior.scale,
       mcmc.samples = 0,
-      interval.width = model$interval.width,
-      fit = TRUE)
+      interval.width = model$interval.width)
+
+    exreg_names <- names(model$extra_regressors)
+    for (i in seq_along(model$extra_regressors)) {
+      exreg <- model$extra_regressors[[i]]
+      m <- add_regressor(m, exreg_names[i], exreg$prior.scale, exreg$standardize, exreg$mode)
+    }
+    m <- fit.prophet(m, data_hist)
 
     resid_df <- predict(m, data_hist)
     resid_df <- merge(resid_df, data_hist, by = "ds")[, c("ds", "y", "yhat")]
