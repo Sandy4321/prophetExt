@@ -1,7 +1,7 @@
 #' @importFrom lubridate month day wday
 #' @export
 jpn_holidays <- function(begin, end) {
-  if (!require("Nippon")) {
+  if (!requireNamespace("Nippon")) {
     stop('Please install.pacakges("Nippon")')
   }
   target_dates <- seq(as.Date(begin), as.Date(end), by="days")
@@ -92,7 +92,7 @@ jpn_holidays <- function(begin, end) {
 
   NewYear <- data.frame(
     holiday = "年末年始",
-    ds = seq(as.Date("2014-01-01"), as.Date("2018-01-01"), by = "years"),
+    ds = seq(lubridate::ceiling_date(begin, "year"), end, by = "years"),
     lower_window = -4,
     upper_window = 1
   )
